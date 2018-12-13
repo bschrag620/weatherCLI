@@ -10,7 +10,8 @@ module ParseData
         def return_hash
             # available instance variable for forecast class are =>
             # :day, :date, :max, :min, :temperature_units, :wind_direction, :wind_magnitude, :wind_units, :date, :short_detail, :long_detail, :humidity
-            days.collect.with_index do |i, day|
+            days.collect.with_index do |day, i|
+                puts i
                 {   :day => days[i],
                     :date => dates[i],
                     :max => max_temps[i],
@@ -53,7 +54,7 @@ module ParseData
         end
    
         def forecast_wind
-            self.html.css('tbody td.wind')
+            self.html.css('tbody td.wind span')
         end
 
         def wind_direction(wind_text)
@@ -69,8 +70,8 @@ module ParseData
         end
 
         def wind_values
-            forecast_wind.collect do |wind|
-                wind_direction(wind.css('span').text)
+            forecast_wind.collect do |wind|                
+                wind.text
             end
         end
 
@@ -99,7 +100,7 @@ module ParseData
         end
 
         def short_details
-            self.html.css('tbody td.desciption').collect do |detail|
+            self.html.css('tbody td.description').collect do |detail|
                 detail.text
             end
         end
@@ -107,7 +108,7 @@ module ParseData
         def humidities
             values = []
             self.html.css('tbody td.humidity span span').each do |humidity|
-                if humidity.txt != "%"
+                if humidity.text != "%"
                     values << humidity.text
                 end
             end
