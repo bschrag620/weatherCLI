@@ -11,7 +11,6 @@ module ParseData
             # available instance variable for forecast class are =>
             # :day, :date, :max, :min, :temperature_units, :wind_direction, :wind_magnitude, :wind_units, :date, :short_detail, :long_detail, :humidity
             days.collect.with_index do |day, i|
-                puts i
                 {   :day => days[i],
                     :date => dates[i],
                     :max => max_temps[i],
@@ -21,7 +20,8 @@ module ParseData
                     :wind_units => wind_units[i],
                     :short_detail => short_details[i],
                     :long_detail => long_details[i],
-                    :humidity => humidities[i]}
+                    :humidity => humidities[i],
+                    :precipitation => precips[i]}
             end
         end
                     
@@ -113,6 +113,12 @@ module ParseData
                 end
             end
         values
+        end
+
+        def precips
+            self.html.css('tbody td.precip div').collect do |precip|
+                precip.text
+            end
         end
     end
 end
