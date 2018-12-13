@@ -1,10 +1,9 @@
 module ParseData
     class WeatherChannelFiveDay
-        attr_accessor :file, :html
+        attr_accessor :html
         
         def initialize(file)
-            self.file = file
-            self.html = Nokogiri::HTML(self.file.read)
+            self.html = Nokogiri::HTML(file.read)
         end
 
         def return_hash
