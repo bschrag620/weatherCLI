@@ -5,7 +5,8 @@ require 'gem_menu'
 require './lib/weatherCLI/version'
 require './lib/forecast'
 require './lib/weathercard'
+require './lib/settings'
 require 'json'
 
-
+SETTINGS_PATH = './config/settings'
 TEST_PATH = './fixtures/weather.html'
