@@ -31,7 +31,11 @@ module WeatherCLI
     end
 
     class Hourly
-
+        def self.display(zip='72703')
+            html = GatherData::WeatherChannelHourly.return_html(zip)
+            weather_hashes = ParseData::WeatherChannelHourly.new(html).return_hash
+#            WeatherCard::Hourly.reset
+        end
     end
                 
 end

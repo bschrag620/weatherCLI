@@ -260,4 +260,84 @@ module ParseData
             self.html.css('div#daypart-2 div.today-daypart-temp').text
         end
     end
+
+    class WeatherChannelHourly
+        attr_accessor :html
+        
+        def initialize(doc)
+            self.html = Nokogiri::HTML(doc)
+        end
+
+        def return_hash
+            names.collect.with_index do |name, i|
+                {   :day => name,
+                    :current_temp => temps[i],
+                    :feels_like => feels[i],
+                    :wind_magnitude => winds[i],
+                    :humidity => humidities[i],
+                    :precipitation => precips[i],
+                    :short_detail => short_details[i]
+                }
+        end
+
+        def names
+            days.zip(times).collect do |day, time|
+                "#{day}#{time}"
+            end
+        end
+
+        def values(value)
+            self.html.css("tbody td.#{value} span").collect do |item|
+                item.text
+            end
+        end
+
+        def short_details
+            values('hidden-cell-sm_description')
+        end
+
+        def temps
+            values('temp')
+        end
+
+        def feels
+            values('feels')
+        end
+
+        def precips
+            items = values('precip')
+            items.each do |item|
+                if item.length < 2
+                    items.delete(item)
+                end
+            end
+            items
+        end
+
+        def humidities
+            items = values('humidity')
+            items.each do |item|
+                if item.length < 2
+                    items.delete(item)
+                end
+            end
+            items
+        end
+
+        def times
+            self.html.css('tbody div.hourly-time span').collect do |time|
+                time.text
+            end
+        end
+    
+        def days
+            self.html.css('tbody div.hourly-date span').collect do |day|
+                day.text
+            end
+        end
+
+        def winds
+            values('wind').collect {|wind| wind.gsub(' ', '')}
+        end     
+    end
 end

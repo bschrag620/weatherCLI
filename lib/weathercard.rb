@@ -18,10 +18,8 @@ module WeatherCard
         @@horizontal = '-'.colorize(:light_yellow)
         @@vertical = '|'.colorize(:light_yellow)
 
-        def initialize(day)
-            self.day = day
-            @@all << self
-        end
+        extend WeatherCard::ClassMethods
+        include WeatherCard::InstanceMethods
 
         def line_one
             @@horizontal * (@@length + 2)
@@ -78,14 +76,6 @@ module WeatherCard
             puts line_five
             puts line_six
             puts line_seven
-        end
-
-        def self.reset
-            @@all = []
-        end
-
-        def self.all
-            @@all
         end
 
         def self.display_single_row
@@ -218,6 +208,30 @@ module WeatherCard
                 
                 puts new_string
             end
+        end
+    end
+
+    class Hourly
+#                    -------------
+#                    |dayTime    |
+#                    |temp feels |
+#                    |shortdetail|
+#                    |xx wind    |
+#                    |h:xxx p:xxx|
+#                    -------------
+
+
+        attr_accessor :day      #=> receives day object       
+        @@all = []
+        @@length = 11
+        @@horizontal = '-'.colorize(:light_yellow)
+        @@vertical = '|'.colorize(:light_yellow)
+
+        extend WeatherCard::ClassMethods
+        include WeatherCard::InstanceMethods
+
+        def line1
+            
         end
     end
 end
