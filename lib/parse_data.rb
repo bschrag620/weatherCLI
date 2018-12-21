@@ -1,14 +1,16 @@
+# module for sifting through a Nokogiri object to retrieve the desired properties
+
 module ParseData
     class WeatherChannelFiveDay
         attr_accessor :html
         
-        def initialize(file)
-            self.html = Nokogiri::HTML(file.read)
+        def initialize(doc)
+            self.html = Nokogiri::HTML(doc)
         end
 
         def return_hash
             # available instance variable for forecast class are =>
-            # :day, :date, :max, :min, :temperature_units, :wind_direction, :wind_magnitude, :wind_units, :date, :short_detail, :long_detail, :humidity
+            # :day, :date, :max, :min, :wind_direction, :wind_magnitude, :wind_units, :date, :short_detail, :long_detail, :humidity
             days.collect.with_index do |day, i|
                 {   :day => days[i],
                     :date => dates[i],
@@ -118,6 +120,144 @@ module ParseData
             self.html.css('tbody td.precip div').collect do |precip|
                 precip.text
             end
+        end
+    end
+
+    class WeatherChannelToday
+        attr_accessor :html
+        
+        def initialize(doc)
+            self.html = Nokogiri::HTML(doc)
+        end
+
+        def return_hash
+                {   :day => panel0_text,
+                    :panel1_name => panel1_text,
+                    :panel2_name => panel2_text,
+                    :current_temp => current_temp,
+                    :panel1_temp => panel1_temp,
+                    :panel2_temp => panel2_temp,
+                    :short_detail => panel0_short_detail,
+                    :panel1_short_detail => panel1_short_detail,
+                    :panel2_short_detail => panel2_short_detail,
+                    :precipitation => panel0_precip,
+                    :panel1_precip => panel1_precip,
+                    :panel2_precip => panel2_precip,
+                    :max => max,
+                    :min => min,
+                    :wind_direction => wind_direction,
+                    :wind_magnitude => wind_magnitude,
+                    :wind_units => wind_units,
+                    :long_detail => long_detail,
+                    :humidity => humidity,
+                    :uv_index => uv_index,
+                    :sunrise => sunrise,
+                    :sunset => sunset,
+                    :feels_like => feels_like}
+        end
+
+        def feels_like
+            self.html.css('div.today_nowcard div.today_nowcard-feels span.deg-feels').text
+        end
+
+        def current_temp
+            self.html.css('div.today_nowcard div.today_nowcard-temp span').text
+        end
+
+        def max
+            self.html.css('div.today_nowcard-hilo span.deg-hilo-nowcard')[0].text
+        end
+
+        def min
+            self.html.css('div.today_nowcard-hilo span.deg-hilo-nowcard')[1].text
+        end
+
+        def wx_detail
+            self.html.css('div.looking-ahead.panel-footer li.wx-detail span.wx-detail-text span.wx-detail-value')
+        end
+        
+        def wind
+            wx_detail[0].text
+        end
+
+        def wind_units
+            wind.split(' ')[2]
+        end
+
+        def wind_direction
+            wind.split(' ')[0]
+        end
+
+        def wind_magnitude
+            wind.split(' ')[1]
+        end
+
+        def humidity
+            wx_detail[1].text
+        end
+
+        def uv_index
+            wx_detail[2].text.sub(' ', '')
+        end
+
+        def sunrise
+            wx_detail.css('span#dp0-details-sunrise').text.sub(' ', '')
+        end
+
+        def sunset
+            wx_detail.css('span#dp0-details-sunset').text.sub(' ', '')
+        end
+
+        def long_detail
+            self.html.css('div.dp-details span#dp0-details-narrative').text
+        end
+
+        def panel0_precip
+            self.html.css('div#daypart-0 span.precip-val').text
+        end
+
+        def panel1_precip
+            self.html.css('div#daypart-1 span.precip-val').text
+        end
+
+        def panel2_precip
+            self.html.css('div#daypart-2 span.precip-val').text
+        end
+
+        def panel0_short_detail
+            self.html.css('div#daypart-0 span.today-daypart-wxphrase').text
+        end
+
+        def panel1_short_detail
+            self.html.css('div#daypart-1 span.today-daypart-wxphrase').text
+        end
+
+        def panel2_short_detail
+            self.html.css('div#daypart-2 span.today-daypart-wxphrase').text
+        end
+
+        def panel0_text
+            self.html.css('div#daypart-0 span.today-daypart-title').text
+        end
+
+        def panel1_text
+            self.html.css('div#daypart-1 span.today-daypart-title').text
+        end
+
+        def panel2_text
+            self.html.css('div#daypart-2 span.today-daypart-title').text
+        end
+
+        def panel0_temp
+            self.html.css('div#daypart-0 div.today-daypart-temp').text
+        end
+
+        def panel1_temp
+            self.html.css('div#daypart-1 div.today-daypart-temp').text
+        end
+
+        def panel2_temp
+            self.html.css('div#daypart-2 div.today-daypart-temp').text
         end
     end
 end
