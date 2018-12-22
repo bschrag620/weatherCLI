@@ -26,7 +26,7 @@ module WeatherCLI
                 day = Forecast::Day.new(weather)
                 WeatherCard::FiveLines.new(day)
             end
-            WeatherCard::FiveLines.display_single_row
+            WeatherCard::FiveLines.display
         end
     end
 
@@ -34,7 +34,12 @@ module WeatherCLI
         def self.display(zip='72703')
             html = GatherData::WeatherChannelHourly.return_html(zip)
             weather_hashes = ParseData::WeatherChannelHourly.new(html).return_hash
-#            WeatherCard::Hourly.reset
+            WeatherCard::Hourly.reset
+            weather_hashes.each do |weather|
+                day = Forecast::Day.new(weather)
+                WeatherCard::Hourly.new(day)
+            end
+            WeatherCard::Hourly.display
         end
     end
                 

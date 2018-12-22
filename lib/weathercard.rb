@@ -21,8 +21,25 @@ module WeatherCard
         extend WeatherCard::ClassMethods
         include WeatherCard::InstanceMethods
 
+        def self.length
+            @@length
+        end
+    
+        def self.horizontal
+            @@horizontal
+        end
+
+        def self.vertical
+            @@vertical
+        end
+
+        def self.all
+            @@all
+        end
+
+
         def line_one
-            @@horizontal * (@@length + 2)
+            line_end
         end
 
         def line_two
@@ -68,17 +85,7 @@ module WeatherCard
             line_one
         end
 
-        def display
-            puts line_one
-            puts line_two
-            puts line_three
-            puts line_four
-            puts line_five
-            puts line_six
-            puts line_seven
-        end
-
-        def self.display_single_row
+        def self.display
             row1 = ''
             row2 = ''
             row3 = ''
@@ -116,16 +123,33 @@ module WeatherCard
 #       8            | panel1 precip:xxx             |
 #       9            ---------------------------------
         attr_accessor :day
+        @@all = []
         @@length = 31
         @@horizontal = '-'.colorize(:light_yellow)
-        @@vertical = '|'.colorize(:light_yellow)        
+        @@vertical = '|'.colorize(:light_yellow)
+        
+
+        extend WeatherCard::ClassMethods
+        include WeatherCard::InstanceMethods        
         
 # :day, :panel_1_name, :current_temp, :panel_1_temp, :panel_2_temp, :short_detail, panel_1_short_detail, :panel_2_short_detail
 # :precipitation, :panel_1_precip, :panel_2_precip, :max, :min, :wind_direction, :wind_magnitude, :wind_units,
 # :long_detail, :humidity, :uv_index, :sunrise, :sunset
-        
-        def return_spaces(length)
-            ' ' * (@@length - length)
+
+        def self.length
+            @@length
+        end
+    
+        def self.horizontal
+            @@horizontal
+        end
+
+        def self.vertical
+            @@vertical
+        end
+
+        def self.all
+            @@all
         end
         
         def initialize(day)
@@ -133,50 +157,56 @@ module WeatherCard
         end
 
         def line1
-            @@horizontal * (@@length + 2)
+            line_end
         end
 
         def line2
             str_length = day.day.length + day.short_detail.length + 2
-            remainder = @@length - str_length
-            spaces = ' ' * remainder
-            "#{@@vertical} #{day.day}#{spaces}#{day.short_detail} #{@@vertical}"
+            spaces = return_spaces(str_length)
+            str = "#{day.day}#{spaces}#{day.short_detail}"
+            line_intermediate(str)
         end
 
         def line3
             str_length = day.max.length + day.min.length + day.current_temp.length + 18
             spaces = return_spaces(str_length)
-            "#{@@vertical} H:#{day.max.colorize(:light_red)}  L:#{day.min.colorize(:light_blue)}#{spaces}Currently:#{day.current_temp} #{@@vertical}"
+            str = "H:#{day.max.colorize(:light_red)}  L:#{day.min.colorize(:light_blue)}#{spaces}Currently:#{day.current_temp}"
+            line_intermediate(str)
         end
 
         def line4
             str_length = day.uv_index.length + day.sunrise.length + 13
             spaces = return_spaces(str_length)
-            "#{@@vertical} UV:#{day.uv_index}#{spaces}feels like:#{day.feels_like} #{@@vertical}"
+            str = "UV:#{day.uv_index}#{spaces}feels like:#{day.feels_like}"
+            line_intermediate(str)
         end
 
         def line5
             str_length = day.wind_magnitude.length + day.wind_direction.length + day.wind_units.length + day.sunset.length + 15
             spaces = return_spaces(str_length)
-            "#{@@vertical} wind:#{day.wind_direction}#{day.wind_magnitude}#{day.wind_units}#{spaces}sunrise #{day.sunrise} #{@@vertical}"
+            str = "wind:#{day.wind_direction}#{day.wind_magnitude}#{day.wind_units}#{spaces}sunrise #{day.sunrise}"
+            line_intermediate(str)
         end
 
         def line6
             str_length = day.humidity.length + day.sunset.length + 18
             spaces = return_spaces(str_length)
-            "#{@@vertical} humidity:#{day.humidity}#{spaces}sunset #{day.sunset} #{@@vertical}"
+            str = "humidity:#{day.humidity}#{spaces}sunset #{day.sunset}"
+            line_intermediate(str)
         end
 
         def line7
             str_length = day.panel1_name.length + day.panel1_temp.length + 7
             spaces = return_spaces(str_length)
-            "#{@@vertical} #{day.panel1_name} low:#{day.panel1_temp}#{spaces} #{@@vertical}"
+            str = "#{day.panel1_name} low:#{day.panel1_temp}#{spaces}"
+            line_intermediate(str)
         end
 
         def line8
             str_length = day.panel1_name.length + day.panel1_precip.length + 10
             spaces = return_spaces(str_length)
-            "#{@@vertical} #{day.panel1_name} precip:#{day.panel1_precip}#{spaces} #{@@vertical}"
+            str = "#{day.panel1_name} precip:#{day.panel1_precip}#{spaces}"
+            line_intermediuate(str)
         end
 
         def line9
@@ -204,9 +234,8 @@ module WeatherCard
                     break if words == []
                 end
                 spaces = return_spaces(new_string.length + 2)
-                new_string = "#{@@vertical} #{new_string.colorize(:light_yellow)}#{spaces} #{@@vertical}"
-                
-                puts new_string
+                new_string = "#{new_string.colorize(:light_yellow)}#{spaces}"                
+                puts line_intermediate(new_string)
             end
         end
     end
@@ -230,8 +259,106 @@ module WeatherCard
         extend WeatherCard::ClassMethods
         include WeatherCard::InstanceMethods
 
+        def self.length
+            @@length
+        end
+    
+        def self.horizontal
+            @@horizontal
+        end
+
+        def self.vertical
+            @@vertical
+        end
+
+        def self.all
+            @@all
+        end
+
         def line1
-            
+            line_end
+        end
+
+        def line2
+            str_length = day.day.length
+            spaces = return_spaces(str_length)
+            str = "#{day.day}#{spaces}"
+            line_intermediate(str)
+        end
+
+        def line3
+            str_length = day.current_temp.length + 6
+            spaces = return_spaces(str_length)
+            str = "curr: #{day.current_temp}#{spaces}"
+            line_intermediate(str)
+        end
+
+        def line4
+            str_length = day.feels_like.length + 7
+            spaces = return_spaces(str_length)
+            str = "feels: #{day.feels_like}#{spaces}"
+            line_intermediate(str)
+        end
+
+        def line5
+            str_length = [day.short_detail.length, 11].min
+            spaces = return_spaces(str_length)
+            str = "#{day.short_detail[0..10]}#{spaces}"
+            line_intermediate(str)
+        end
+    
+        def line6
+            str_length = day.wind_magnitude.length
+            spaces = return_spaces(str_length)
+            str = "#{day.wind_magnitude}#{spaces}"
+            line_intermediate(str)
+        end
+    
+        def line7
+            str_length = day.humidity.length + day.precipitation.length + 4
+            spaces = return_spaces(str_length)
+            str = "h:#{day.humidity}#{spaces}p:#{day.precipitation}"
+            line_intermediate(str)
+        end
+    
+        def line8
+            line1
+        end
+
+        def self.display
+            beginning = 0
+            final = 5
+            n = (self.length / 6.0 + 0.5).to_i
+            n.times do
+                row1 = ''
+                row2 = ''
+                row3 = ''
+                row4 = ''
+                row5 = ''
+                row6 = ''
+                row7 = ''
+                row8 = ''
+                self.all[beginning..final].each do |weather|
+                    row1 += weather.line1
+                    row2 += weather.line2
+                    row3 += weather.line3
+                    row4 += weather.line4
+                    row5 += weather.line5
+                    row6 += weather.line6
+                    row7 += weather.line7
+                    row8 += weather.line8
+                end
+                beginning += 6
+                final += 6
+                puts row1
+                puts row2
+                puts row3
+                puts row4
+                puts row5
+                puts row6
+                puts row7
+                puts row8
+            end
         end
     end
 end

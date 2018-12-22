@@ -278,11 +278,12 @@ module ParseData
                     :precipitation => precips[i],
                     :short_detail => short_details[i]
                 }
+            end
         end
 
         def names
             days.zip(times).collect do |day, time|
-                "#{day}#{time}"
+                "#{day}#{time}".gsub(' ', '')
             end
         end
 
@@ -293,7 +294,8 @@ module ParseData
         end
 
         def short_details
-            values('hidden-cell-sm_description')
+            a = values('hidden-cell-sm.description')
+            a
         end
 
         def temps
@@ -331,13 +333,13 @@ module ParseData
         end
     
         def days
-            self.html.css('tbody div.hourly-date span').collect do |day|
+            self.html.css('tbody div.hourly-date').collect do |day|               
                 day.text
             end
         end
 
         def winds
-            values('wind').collect {|wind| wind.gsub(' ', '')}
+            values('wind')
         end     
     end
 end
