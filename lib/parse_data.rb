@@ -283,7 +283,7 @@ module ParseData
 
         def names
             days.zip(times).collect do |day, time|
-                "#{day}#{time}".gsub(' ', '')
+                "#{time}".gsub(' ', '')
             end
         end
 

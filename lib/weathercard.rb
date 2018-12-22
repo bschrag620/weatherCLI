@@ -161,49 +161,49 @@ module WeatherCard
         end
 
         def line2
-            str_length = day.day.length + day.short_detail.length + 2
+            str_length = day.day.length + day.short_detail.length
             spaces = return_spaces(str_length)
             str = "#{day.day}#{spaces}#{day.short_detail}"
             line_intermediate(str)
         end
 
         def line3
-            str_length = day.max.length + day.min.length + day.current_temp.length + 18
+            str_length = day.max.length + day.min.length + day.current_temp.length + 16
             spaces = return_spaces(str_length)
             str = "H:#{day.max.colorize(:light_red)}  L:#{day.min.colorize(:light_blue)}#{spaces}Currently:#{day.current_temp}"
             line_intermediate(str)
         end
 
         def line4
-            str_length = day.uv_index.length + day.sunrise.length + 13
+            str_length = day.uv_index.length + day.sunrise.length + 11
             spaces = return_spaces(str_length)
             str = "UV:#{day.uv_index}#{spaces}feels like:#{day.feels_like}"
             line_intermediate(str)
         end
 
         def line5
-            str_length = day.wind_magnitude.length + day.wind_direction.length + day.wind_units.length + day.sunset.length + 15
+            str_length = day.wind_magnitude.length + day.wind_direction.length + day.wind_units.length + day.sunset.length + 13
             spaces = return_spaces(str_length)
             str = "wind:#{day.wind_direction}#{day.wind_magnitude}#{day.wind_units}#{spaces}sunrise #{day.sunrise}"
             line_intermediate(str)
         end
 
         def line6
-            str_length = day.humidity.length + day.sunset.length + 18
+            str_length = day.humidity.length + day.sunset.length + 16
             spaces = return_spaces(str_length)
             str = "humidity:#{day.humidity}#{spaces}sunset #{day.sunset}"
             line_intermediate(str)
         end
 
         def line7
-            str_length = day.panel1_name.length + day.panel1_temp.length + 7
+            str_length = day.panel1_name.length + day.panel1_temp.length + 5
             spaces = return_spaces(str_length)
             str = "#{day.panel1_name} low:#{day.panel1_temp}#{spaces}"
             line_intermediate(str)
         end
 
         def line8
-            str_length = day.panel1_name.length + day.panel1_precip.length + 10
+            str_length = day.panel1_name.length + day.panel1_precip.length + 8
             spaces = return_spaces(str_length)
             str = "#{day.panel1_name} precip:#{day.panel1_precip}#{spaces}"
             line_intermediuate(str)
@@ -228,12 +228,12 @@ module WeatherCard
             words = day.long_detail.split(' ')
             while words.length > 0 do
                 new_string = ''
-                while new_string.length + words[0].length < @@length - 2 do
+                while new_string.length + words[0].length < @@length do
                     new_string += words.shift
                     new_string += ' '
                     break if words == []
                 end
-                spaces = return_spaces(new_string.length + 2)
+                spaces = return_spaces(new_string.length)
                 new_string = "#{new_string.colorize(:light_yellow)}#{spaces}"                
                 puts line_intermediate(new_string)
             end
@@ -282,7 +282,7 @@ module WeatherCard
         def line2
             str_length = day.day.length
             spaces = return_spaces(str_length)
-            str = "#{day.day}#{spaces}"
+            str = "#{day.day.colorize(:light_green)}#{spaces}"
             line_intermediate(str)
         end
 

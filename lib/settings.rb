@@ -9,6 +9,7 @@ class Settings
         end
         file = File.read(SETTINGS_PATH)
         settings_hash = JSON.parse(file)
+        puts "settings_hash: #{settings_hash}"
         @@zip_codes = settings_hash["zip_codes"]
     end
 
@@ -24,19 +25,19 @@ class Settings
         @@zip_code = []
     end
 
-    def self.save_zips
+    def self.save
         File.open(SETTINGS_PATH, 'w') do |f|
-            f.write(JSON.pretty_generate(@@zip_codes))
+            f.write(JSON.pretty_generate(self.class_hash))
         end
     end
 
     def self.add_zip(zip)
         @@zip_codes << zip
+        self.save
     end
 
     def self.remove_zip(zip)
         @@zip_codes.delete(zip)
-        self.save_zips
+        self.save
     end
-
 end
