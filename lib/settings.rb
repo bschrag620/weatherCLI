@@ -9,7 +9,6 @@ class Settings
         end
         file = File.read(SETTINGS_PATH)
         settings_hash = JSON.parse(file)
-        puts "settings_hash: #{settings_hash}"
         @@zip_codes = settings_hash["zip_codes"]
     end
 

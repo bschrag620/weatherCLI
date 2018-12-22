@@ -1,0 +1,19 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    colorize (0.8.1)
+    gem_menu (0.2.1)
+      colorize (~> 0.8.1)
+    mini_portile2 (2.3.0)
+    nokogiri (1.8.5)
+      mini_portile2 (~> 2.3.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gem_menu
+  nokogiri
+
+BUNDLED WITH
+   1.17.1
