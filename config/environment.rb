@@ -15,4 +15,5 @@ require './lib/gather_data'
 
 
 SETTINGS_PATH = './config/settings'
+ZIP_MATCH = Regexp.new('^[0-9]{5}$')
 Settings.init
